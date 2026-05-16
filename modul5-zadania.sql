@@ -35,6 +35,53 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('wyst¹pi³ b³¹d o kodzie: '||sqlcode||', komunikat: '||sqlerrm);
 END;
 /
---
---SELECT * FROM COUNTRIES;
---SELECT owner, table_name FROM all_tables WHERE table_name = 'COUNTRIES';
+-- M5 zad 3
+declare 
+    v_hight number := 250;
+    v_weight number := 80;
+    v_bmi number;
+    v_przedzial_ponizej varchar2(100):= '<16 "ale z Ciebie niejadek" ';
+    v_przedzial_idealny varchar2(100):= '>=16 i <25 "dobra forma, tak trzymaj" ';
+    v_przedzial_powyzej varchar2(100):= '>= 25 "zrób kilka pompek" ';
+    v_przedzial varchar2(100);
+    ex_too_big EXCEPTION;   
+
+begin
+
+    if v_hight > 225 then 
+        RAISE ex_too_big;
+    end if;
+    
+    
+    v_przedzial := '';
+    v_hight := v_hight/100;
+    v_bmi := v_weight/power(v_hight,2);
+        
+    if v_bmi < 16 then
+        v_przedzial := v_przedzial_ponizej;
+    elsif v_bmi >=16 and v_bmi <25 then
+        v_przedzial := v_przedzial_idealny;
+    else 
+        v_przedzial := v_przedzial_powyzej;
+    end if;
+    
+    dbms_output.put_line(v_przedzial);
+EXCEPTION
+    WHEN ex_too_big THEN
+        DBMS_OUTPUT.PUT_LINE('podany wzrost jest nienaturalnie du¿y i nale¿y wprowadziæ poprawn¹ wartoœæ');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('wyst¹pi³ b³¹d o kodzie: '||sqlcode||', komunikat: '||sqlerrm);
+    
+end;
+/
+
+--M5 zad 4
+--https://docs.oracle.com/en/database/oracle/oracle-database/18/lnpls/plsql-error-handling.html?source=%3Aso%3Ach%3Aor%3Adg%3A%3A%3A%3ATurnOnIn+%3Aow%3Aevp%3Acpo%3A%3A%3A%3ARC_CORP260213P00018%3ALPD400439168&source=%3Aso%3Ach%3Aor%3Adg%3A%3A%3A%3ATurnOnIn+%3Aow%3Aevp%3Acpo%3A%3A%3A%3ARC_CORP260213P00018%3ALPD400439168&source=%3Aso%3Ach%3Aor%3Adg%3A%3A%3A%3ATurnOnIn+%3Aow%3Aevp%3Acpo%3A%3A%3A%3ARC_CORP260213P00018%3ALPD400439168&source=%3Aso%3Ach%3Aor%3Adg%3A%3A%3A%3ATurnOnIn+%3Aow%3Aevp%3Acpo%3A%3A%3A%3ARC_CORP260213P00018%3ALPD400439168&source=%3Aso%3Ach%3Aor%3Adg%3A%3A%3A%3ATurnOnIn+%3Aow%3Aevp%3Acpo%3A%3A%3A%3ARC_CORP260213P00018%3ALPD400439168&source=%3Aso%3Ach%3Aor%3Adg%3A%3A%3A%3ATurnOnIn+%3Aow%3Aevp%3Acpo%3A%3A%3A%3ARC_CORP260213P00018%3ALPD400439168&source=%3Aso%3Ach%3Aor%3Adg%3A%3A%3A%3ATurnOnIn+%3Aow%3Aevp%3Acpo%3A%3A%3A%3ARC_CORP260213P00018%3ALPD400439168#GUID-4F0787E6-ABCA-4860-A28E-435C7FE15154
+
+
+--M5 zad 5
+--3  rodzaje wyj¹tków:
+--- systemowe predefiniowane - wyj¹tki def. przez oracle, którymi producent nada³ w³asne nazwy
+--- systewmowe niedefiniowane - wyj¹tki wywo³ywane przez oracle, którym producent nie nada³ w³asnej nazwy
+--- u¿ytkownika - wyj¹tki, które samemu trzeba zdefinowaæ i wywo³aæ
+
