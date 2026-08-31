@@ -17,6 +17,27 @@ begin
 end wygeneruj_liste_produktow;
 /
 exec wygeneruj_liste_produktow;
-
+select m.first_name ||' '|| m.last_name as manager, e.first_name ||' '|| e.last_name as employee from employees m, employees e where m.employee_id = e.manager_id and e.employee_id = 101;
+select * from employees;
 --M8 zad 2
+drop procedure wyswietl_przelozonego_pracownika;
+create or replace procedure wyswietl_przelozonego_pracownika (
+    id_pracownika number)
+IS 
+    v_manager varchar2(200);
+    v_employee varchar2(200);
+begin 
+    select m.first_name ||' '|| m.last_name as manager, e.first_name ||' '|| e.last_name as employee 
+    into v_manager, v_employee
+    from employees m, employees e where 
+    m.employee_id = e.manager_id 
+    and e.employee_id = id_pracownika;
+    
+    dbms_output.put_line(v_manager || ' jest prze³o¿onym pracownika: ' || v_employee);
+end;
+/
+exec wyswietl_przelozonego_pracownika(101);
+/
 
+--M8 zad 3
+select * from countries where region_id = 4;
