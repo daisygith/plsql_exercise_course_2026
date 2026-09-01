@@ -40,4 +40,27 @@ exec wyswietl_przelozonego_pracownika(101);
 /
 
 --M8 zad 3
-select * from countries where region_id = 4;
+--select * from countries where region_id = 4;
+set serveroutput on;
+drop procedure zmiana_znakow_upper;
+create or replace procedure zmiana_znakow_upper(
+in_region_id number, out_count OUT NUMBER
+)is
+--v_country_name varchar2(200);
+begin
+--    for i in (select country_name from countries where region_id = Pregion_id) loop
+    UPDATE countries
+    SET country_name = UPPER(country_name)
+    WHERE region_id = in_region_id;
+    
+    out_count:= sql%rowcount;
+end;
+/
+DECLARE
+    v_rowscount NUMBER;
+    in_region_id NUMBER := 4;
+BEGIN
+    zmiana_znakow_upper (in_region_id, v_rowscount);
+    DBMS_OUTPUT.PUT_LINE('Zmodyfikowano nazwê '||v_rowscount||' krajów nale¿¹cych do regionu ' || in_region_id || '.');
+END;
+/
